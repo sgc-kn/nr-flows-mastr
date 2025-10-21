@@ -1,1 +1,1223 @@
-[]
+[
+    {
+        "id": "069d71589049e2d5",
+        "type": "tab",
+        "label": "[T] Stromerzeugung und Speicher",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "ebc0db16fd47daa1",
+        "type": "tab",
+        "label": "Environment",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "a4addf0ea6cae695",
+        "type": "group",
+        "z": "069d71589049e2d5",
+        "name": "Database Schema",
+        "style": {
+            "fill": "#ffffbf",
+            "label": true
+        },
+        "nodes": [
+            "c72da0ee1c40b572",
+            "0f756acc0a36fd71",
+            "f9dc2645739c225d",
+            "29a1ea573043f9f1",
+            "4e1300724224e5e6",
+            "f4f64d47091702e1",
+            "99a9bb1422ec5681",
+            "c255f80b13e7597c"
+        ],
+        "x": 28,
+        "y": 33,
+        "w": 1318,
+        "h": 248
+    },
+    {
+        "id": "99a9bb1422ec5681",
+        "type": "group",
+        "z": "069d71589049e2d5",
+        "g": "a4addf0ea6cae695",
+        "name": "",
+        "style": {
+            "fill": "#ffbfbf",
+            "label": true
+        },
+        "nodes": [
+            "ca1d98477e0c5eae",
+            "e08f1e377035134b",
+            "79a16fbbf74f339e"
+        ],
+        "x": 54,
+        "y": 59,
+        "w": 572,
+        "h": 142
+    },
+    {
+        "id": "5edaa054b4efabf2",
+        "type": "group",
+        "z": "069d71589049e2d5",
+        "g": "5db400a3a36e6624",
+        "name": "Submit to database ",
+        "style": {
+            "label": true
+        },
+        "nodes": [
+            "85568a018d8ab769",
+            "375f9049881e55c9",
+            "d629c6904493bd46",
+            "026554d2bf63dd70"
+        ],
+        "x": 474,
+        "y": 1219,
+        "w": 512,
+        "h": 162
+    },
+    {
+        "id": "5db400a3a36e6624",
+        "type": "group",
+        "z": "069d71589049e2d5",
+        "name": "load: batched USDP/PostgresT upload",
+        "style": {
+            "label": true
+        },
+        "nodes": [
+            "4537bdd3c8ec6d65",
+            "c100e1fa866f9222",
+            "d2f1a140acc6ad8b",
+            "5edaa054b4efabf2"
+        ],
+        "x": 34,
+        "y": 1119,
+        "w": 978,
+        "h": 288
+    },
+    {
+        "id": "488c9b19399e3f29",
+        "type": "group",
+        "z": "069d71589049e2d5",
+        "name": "transform",
+        "style": {
+            "label": true
+        },
+        "nodes": [
+            "4a184e4d5a349178",
+            "0860de022163d1b5"
+        ],
+        "x": 34,
+        "y": 799,
+        "w": 472,
+        "h": 82
+    },
+    {
+        "id": "242b73c04a73ac3e",
+        "type": "group",
+        "z": "069d71589049e2d5",
+        "name": "extract: get data from MaStR API",
+        "style": {
+            "label": true
+        },
+        "nodes": [
+            "d6b8f0e013dd2417",
+            "e35a2f8d02000616",
+            "70d492301f00cd07",
+            "52aa04b1efe647b9",
+            "79ff6089299f579c",
+            "2f3276659360f686",
+            "4a548362a2ce613e",
+            "f3646f4dea619e0f",
+            "40959f0d143f9cf5",
+            "146447988bd52380",
+            "6b171d077e4e6588",
+            "8d401a3492be1c9d",
+            "f5b24a56669a4427",
+            "f4d09bf81f8c42b2",
+            "7126b26d722bdb1a",
+            "6b8a02d77fe99e27",
+            "8390aa4c2b78d52d",
+            "e21db1399c84517e",
+            "e031920d60cb70e9"
+        ],
+        "x": 34,
+        "y": 319,
+        "w": 1172,
+        "h": 442
+    },
+    {
+        "id": "74fe9bced58cb394",
+        "type": "group",
+        "z": "069d71589049e2d5",
+        "name": "delete existing data",
+        "style": {
+            "label": true
+        },
+        "nodes": [
+            "a16d4523d24efb82",
+            "97e6f73ee9dd90e6",
+            "c799878894170ef2",
+            "78b4eadc086a8c59",
+            "4462228a65d5c11f"
+        ],
+        "x": 34,
+        "y": 919,
+        "w": 992,
+        "h": 162
+    },
+    {
+        "id": "c72da0ee1c40b572",
+        "type": "function",
+        "z": "069d71589049e2d5",
+        "g": "a4addf0ea6cae695",
+        "name": "Define Statements (CREATE TABLE, ...)",
+        "func": "const dataspace = env.get('FIWARE_SERVICE');\n\nmsg.payload = {statements: []};\nmsg.payload.statements[0] = `\nCREATE TABLE postgrest_${dataspace}.erweiterteoeffentlicheeinheitstromerzeugung (\n    id text,\n    anlagenbetreiberid text,\n    anlagenbetreibermastrnummer text,\n    anlagenbetreibername text,\n    betriebsstatusid integer,\n    betriebsstatusname text,\n    datumletzteaktualisierung timestamptz,\n    einheitmeldedatum timestamptz,\n    einheitname text,\n    inbetriebnahmedatum timestamptz,\n    mastrnummer text,\n    personenartid text,\n    typ integer,\n    ort text,\n    plz text,\n    anzahlsolarmodule decimal,\n    bruttoleistung decimal,\n    energietraegername text,\n    flurstueck text,\n    isanonymisiert text,\n    ispilotwindanlage text,\n    lokationid text,\n    nettonennleistung decimal\n)\n`;\n\nmsg.payload.statements[1] = `COMMENT ON TABLE postgrest_${dataspace}.erweiterteoeffentlicheeinheitstromerzeugung IS 'erweiterte öffentliche einheit stromerzeugung für gemeindeschluessel 08335043'`;\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 420,
+        "y": 240,
+        "wires": [
+            [
+                "0f756acc0a36fd71"
+            ]
+        ]
+    },
+    {
+        "id": "0f756acc0a36fd71",
+        "type": "function",
+        "z": "069d71589049e2d5",
+        "g": "a4addf0ea6cae695",
+        "name": "Configure PostgREST request",
+        "func": "const postgrest = env.get('POSTGREST_API_URL');\n\nmsg.method = 'POST';\nmsg.url = `${postgrest}/rpc/execute_many`;\nmsg.headers = {\n    'Content-Type': 'application/json',\n};\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 930,
+        "y": 100,
+        "wires": [
+            [
+                "c255f80b13e7597c"
+            ]
+        ]
+    },
+    {
+        "id": "f9dc2645739c225d",
+        "type": "debug",
+        "z": "069d71589049e2d5",
+        "g": "a4addf0ea6cae695",
+        "name": "Exec Statement",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1220,
+        "y": 180,
+        "wires": []
+    },
+    {
+        "id": "29a1ea573043f9f1",
+        "type": "inject",
+        "z": "069d71589049e2d5",
+        "g": "a4addf0ea6cae695",
+        "name": "create",
+        "props": [],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "x": 150,
+        "y": 240,
+        "wires": [
+            [
+                "c72da0ee1c40b572"
+            ]
+        ]
+    },
+    {
+        "id": "4e1300724224e5e6",
+        "type": "http request",
+        "z": "069d71589049e2d5",
+        "g": "a4addf0ea6cae695",
+        "name": "",
+        "method": "use",
+        "ret": "obj",
+        "paytoqs": "ignore",
+        "url": "",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 950,
+        "y": 240,
+        "wires": [
+            [
+                "f4f64d47091702e1"
+            ]
+        ]
+    },
+    {
+        "id": "f4f64d47091702e1",
+        "type": "debug",
+        "z": "069d71589049e2d5",
+        "g": "a4addf0ea6cae695",
+        "name": "Exec Response",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": true,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "'status: ' & msg.statusCode",
+        "statusType": "jsonata",
+        "x": 1220,
+        "y": 240,
+        "wires": []
+    },
+    {
+        "id": "ca1d98477e0c5eae",
+        "type": "function",
+        "z": "069d71589049e2d5",
+        "g": "99a9bb1422ec5681",
+        "name": "Define Statement (DROP TABLE)",
+        "func": "const dataspace = env.get('FIWARE_SERVICE');\n\nmsg.payload = { statements: [] };\nmsg.payload.statements[0] = `DROP TABLE IF EXISTS postgrest_${dataspace}.erweiterteoeffentlicheeinheitstromerzeugung`;\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 460,
+        "y": 100,
+        "wires": [
+            [
+                "0f756acc0a36fd71"
+            ]
+        ]
+    },
+    {
+        "id": "e08f1e377035134b",
+        "type": "inject",
+        "z": "069d71589049e2d5",
+        "g": "99a9bb1422ec5681",
+        "name": "clean + recreate",
+        "props": [],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "x": 180,
+        "y": 120,
+        "wires": [
+            [
+                "79a16fbbf74f339e",
+                "ca1d98477e0c5eae"
+            ]
+        ]
+    },
+    {
+        "id": "79a16fbbf74f339e",
+        "type": "delay",
+        "z": "069d71589049e2d5",
+        "g": "99a9bb1422ec5681",
+        "name": "",
+        "pauseType": "delay",
+        "timeout": "1",
+        "timeoutUnits": "seconds",
+        "rate": "1",
+        "nbRateUnits": "1",
+        "rateUnits": "second",
+        "randomFirst": "1",
+        "randomLast": "5",
+        "randomUnits": "seconds",
+        "drop": false,
+        "allowrate": false,
+        "outputs": 1,
+        "x": 400,
+        "y": 160,
+        "wires": [
+            [
+                "c72da0ee1c40b572"
+            ]
+        ]
+    },
+    {
+        "id": "c255f80b13e7597c",
+        "type": "delay",
+        "z": "069d71589049e2d5",
+        "g": "a4addf0ea6cae695",
+        "name": "",
+        "pauseType": "rate",
+        "timeout": "200",
+        "timeoutUnits": "milliseconds",
+        "rate": "2",
+        "nbRateUnits": "1",
+        "rateUnits": "second",
+        "randomFirst": "1",
+        "randomLast": "5",
+        "randomUnits": "seconds",
+        "drop": false,
+        "allowrate": false,
+        "outputs": 1,
+        "x": 960,
+        "y": 180,
+        "wires": [
+            [
+                "4e1300724224e5e6",
+                "f9dc2645739c225d"
+            ]
+        ]
+    },
+    {
+        "id": "d6b8f0e013dd2417",
+        "type": "inject",
+        "z": "069d71589049e2d5",
+        "g": "242b73c04a73ac3e",
+        "name": "",
+        "props": [],
+        "repeat": "",
+        "crontab": "16 06 * * *",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "x": 140,
+        "y": 360,
+        "wires": [
+            [
+                "e35a2f8d02000616"
+            ]
+        ]
+    },
+    {
+        "id": "e35a2f8d02000616",
+        "type": "function",
+        "z": "069d71589049e2d5",
+        "g": "242b73c04a73ac3e",
+        "name": "build & set msg.baseurl",
+        "func": "var url = \"https://www.marktstammdatenregister.de/MaStR/Einheit/EinheitJson/GetVerkleinerteOeffentlicheEinheitStromerzeugung\";\nurl += \"?filter=Gemeindeschl%C3%BCssel%7Eeq%7E%2708335043%27\" // Filter für Gemeindeschlüssel Konstanz (08335043)\nurl += \"&sort=EinheitMeldeDatum-desc\"\n// url += \"&group=\"\n// url += \"&pageSize=100\" // pagination happens downstream\n// url += \"&page=\"        // pagination happens downstream\n\nmsg.baseurl = url;\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 390,
+        "y": 360,
+        "wires": [
+            [
+                "70d492301f00cd07",
+                "52aa04b1efe647b9"
+            ]
+        ]
+    },
+    {
+        "id": "70d492301f00cd07",
+        "type": "debug",
+        "z": "069d71589049e2d5",
+        "g": "242b73c04a73ac3e",
+        "name": "debug 1",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": true,
+        "complete": "baseurl",
+        "targetType": "msg",
+        "statusVal": "baseurl",
+        "statusType": "auto",
+        "x": 660,
+        "y": 360,
+        "wires": []
+    },
+    {
+        "id": "52aa04b1efe647b9",
+        "type": "function",
+        "z": "069d71589049e2d5",
+        "g": "242b73c04a73ac3e",
+        "name": "get number of entries",
+        "func": "msg.url = msg.baseurl + '&pageSize=1'\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 200,
+        "y": 460,
+        "wires": [
+            [
+                "79ff6089299f579c"
+            ]
+        ]
+    },
+    {
+        "id": "79ff6089299f579c",
+        "type": "http request",
+        "z": "069d71589049e2d5",
+        "g": "242b73c04a73ac3e",
+        "name": "",
+        "method": "GET",
+        "ret": "obj",
+        "paytoqs": "ignore",
+        "url": "",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 430,
+        "y": 460,
+        "wires": [
+            [
+                "4a548362a2ce613e"
+            ]
+        ]
+    },
+    {
+        "id": "2f3276659360f686",
+        "type": "debug",
+        "z": "069d71589049e2d5",
+        "g": "242b73c04a73ac3e",
+        "name": "debug 2",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": true,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "n_entries",
+        "statusType": "msg",
+        "x": 860,
+        "y": 460,
+        "wires": []
+    },
+    {
+        "id": "4a548362a2ce613e",
+        "type": "function",
+        "z": "069d71589049e2d5",
+        "g": "242b73c04a73ac3e",
+        "name": "set msg.n_entries",
+        "func": "msg.n_entries = msg.payload.Total\n\n// msg.n_entries = 42 // reduce data set size for development\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 650,
+        "y": 460,
+        "wires": [
+            [
+                "2f3276659360f686",
+                "f3646f4dea619e0f"
+            ]
+        ]
+    },
+    {
+        "id": "f3646f4dea619e0f",
+        "type": "function",
+        "z": "069d71589049e2d5",
+        "g": "242b73c04a73ac3e",
+        "name": "prepare pages",
+        "func": "msg.pageSize = 1000;\n\nmsg.n_pages = Math.ceil(msg.n_entries / msg.pageSize)\n\nmsg.payload = Array.from({ length: msg.n_pages }, (_, i) => i + 1)\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 180,
+        "y": 540,
+        "wires": [
+            [
+                "146447988bd52380",
+                "40959f0d143f9cf5"
+            ]
+        ]
+    },
+    {
+        "id": "40959f0d143f9cf5",
+        "type": "debug",
+        "z": "069d71589049e2d5",
+        "g": "242b73c04a73ac3e",
+        "name": "Number of Pages",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": true,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "n_pages",
+        "statusType": "msg",
+        "x": 430,
+        "y": 540,
+        "wires": []
+    },
+    {
+        "id": "146447988bd52380",
+        "type": "split",
+        "z": "069d71589049e2d5",
+        "g": "242b73c04a73ac3e",
+        "name": "",
+        "splt": "\\n",
+        "spltType": "str",
+        "arraySplt": 1,
+        "arraySpltType": "len",
+        "stream": false,
+        "addname": "",
+        "x": 150,
+        "y": 620,
+        "wires": [
+            [
+                "f4d09bf81f8c42b2"
+            ]
+        ]
+    },
+    {
+        "id": "6b171d077e4e6588",
+        "type": "function",
+        "z": "069d71589049e2d5",
+        "g": "242b73c04a73ac3e",
+        "name": "get page",
+        "func": "msg.url = msg.baseurl + `&pageSize=${msg.pageSize}&page=${msg.payload}`\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 540,
+        "y": 600,
+        "wires": [
+            [
+                "8d401a3492be1c9d"
+            ]
+        ]
+    },
+    {
+        "id": "8d401a3492be1c9d",
+        "type": "http request",
+        "z": "069d71589049e2d5",
+        "g": "242b73c04a73ac3e",
+        "name": "",
+        "method": "GET",
+        "ret": "txt",
+        "paytoqs": "ignore",
+        "url": "",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 710,
+        "y": 620,
+        "wires": [
+            [
+                "f5b24a56669a4427",
+                "e031920d60cb70e9"
+            ]
+        ]
+    },
+    {
+        "id": "f5b24a56669a4427",
+        "type": "debug",
+        "z": "069d71589049e2d5",
+        "g": "242b73c04a73ac3e",
+        "name": "debug 4",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": true,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "statusCode",
+        "statusType": "msg",
+        "x": 1100,
+        "y": 620,
+        "wires": []
+    },
+    {
+        "id": "f4d09bf81f8c42b2",
+        "type": "delay",
+        "z": "069d71589049e2d5",
+        "g": "242b73c04a73ac3e",
+        "name": "",
+        "pauseType": "rate",
+        "timeout": "1",
+        "timeoutUnits": "seconds",
+        "rate": "1",
+        "nbRateUnits": "5",
+        "rateUnits": "second",
+        "randomFirst": "1",
+        "randomLast": "5",
+        "randomUnits": "seconds",
+        "drop": false,
+        "allowrate": false,
+        "outputs": 1,
+        "x": 340,
+        "y": 620,
+        "wires": [
+            [
+                "7126b26d722bdb1a",
+                "6b171d077e4e6588"
+            ]
+        ]
+    },
+    {
+        "id": "7126b26d722bdb1a",
+        "type": "debug",
+        "z": "069d71589049e2d5",
+        "g": "242b73c04a73ac3e",
+        "name": "Page",
+        "active": true,
+        "tosidebar": false,
+        "console": false,
+        "tostatus": true,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "payload",
+        "statusType": "msg",
+        "x": 530,
+        "y": 640,
+        "wires": []
+    },
+    {
+        "id": "6b8a02d77fe99e27",
+        "type": "join",
+        "z": "069d71589049e2d5",
+        "g": "242b73c04a73ac3e",
+        "name": "",
+        "mode": "auto",
+        "build": "object",
+        "property": "payload",
+        "propertyType": "msg",
+        "key": "topic",
+        "joiner": "\\n",
+        "joinerType": "str",
+        "accumulate": "false",
+        "timeout": "",
+        "count": "",
+        "reduceRight": false,
+        "x": 150,
+        "y": 720,
+        "wires": [
+            [
+                "e21db1399c84517e"
+            ]
+        ]
+    },
+    {
+        "id": "8390aa4c2b78d52d",
+        "type": "debug",
+        "z": "069d71589049e2d5",
+        "g": "242b73c04a73ac3e",
+        "name": "debug 5",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 500,
+        "y": 720,
+        "wires": []
+    },
+    {
+        "id": "e21db1399c84517e",
+        "type": "function",
+        "z": "069d71589049e2d5",
+        "g": "242b73c04a73ac3e",
+        "name": "merge pages",
+        "func": "msg.payload = msg.payload.flatMap(\n    item => Array.isArray(item.Data) ? item.Data : []\n    )\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 310,
+        "y": 720,
+        "wires": [
+            [
+                "8390aa4c2b78d52d",
+                "4a184e4d5a349178"
+            ]
+        ]
+    },
+    {
+        "id": "4537bdd3c8ec6d65",
+        "type": "split",
+        "z": "069d71589049e2d5",
+        "g": "5db400a3a36e6624",
+        "name": "",
+        "splt": "\\n",
+        "spltType": "str",
+        "arraySplt": "256",
+        "arraySpltType": "len",
+        "stream": false,
+        "addname": "",
+        "x": 110,
+        "y": 1160,
+        "wires": [
+            [
+                "c100e1fa866f9222"
+            ]
+        ]
+    },
+    {
+        "id": "e031920d60cb70e9",
+        "type": "function",
+        "z": "069d71589049e2d5",
+        "g": "242b73c04a73ac3e",
+        "name": "parse json",
+        "func": "// Source:\n// https://stackoverflow.com/a/14509447\n\nconst dateTimeReviver = function (key, value) {\n    var a;\n    if (typeof value === 'string') {\n        a = /\\/Date\\((\\d*)\\)\\//.exec(value);\n        if (a) {\n            return new Date(+a[1]);\n        }\n    }\n    return value;\n}\n\nmsg.payload = JSON.parse(msg.payload, dateTimeReviver)\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 910,
+        "y": 620,
+        "wires": [
+            [
+                "6b8a02d77fe99e27"
+            ]
+        ]
+    },
+    {
+        "id": "85568a018d8ab769",
+        "type": "function",
+        "z": "069d71589049e2d5",
+        "g": "5edaa054b4efabf2",
+        "name": "Configure PostgREST request",
+        "func": "const postgrest = env.get('POSTGREST_API_URL');\n\nconst dataspace = env.get('FIWARE_SERVICE');\n\nmsg.method = 'POST';\nmsg.url = `${postgrest}/erweiterteoeffentlicheeinheitstromerzeugung`;\nmsg.headers = {\n    'Content-Type': 'application/json',\n    \"Content-Profile\": `postgrest_${dataspace}`,\n};\n\nreturn msg;\n\n\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 630,
+        "y": 1260,
+        "wires": [
+            [
+                "d629c6904493bd46",
+                "375f9049881e55c9"
+            ]
+        ]
+    },
+    {
+        "id": "375f9049881e55c9",
+        "type": "debug",
+        "z": "069d71589049e2d5",
+        "g": "5edaa054b4efabf2",
+        "name": "Payload",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 880,
+        "y": 1260,
+        "wires": []
+    },
+    {
+        "id": "d629c6904493bd46",
+        "type": "http request",
+        "z": "069d71589049e2d5",
+        "g": "5edaa054b4efabf2",
+        "name": "",
+        "method": "use",
+        "ret": "txt",
+        "paytoqs": "ignore",
+        "url": "",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 630,
+        "y": 1340,
+        "wires": [
+            [
+                "026554d2bf63dd70"
+            ]
+        ]
+    },
+    {
+        "id": "026554d2bf63dd70",
+        "type": "debug",
+        "z": "069d71589049e2d5",
+        "g": "5edaa054b4efabf2",
+        "name": "Response",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": true,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "'status: ' & msg.statusCode",
+        "statusType": "jsonata",
+        "x": 880,
+        "y": 1340,
+        "wires": []
+    },
+    {
+        "id": "c100e1fa866f9222",
+        "type": "delay",
+        "z": "069d71589049e2d5",
+        "g": "5db400a3a36e6624",
+        "name": "",
+        "pauseType": "rate",
+        "timeout": "5",
+        "timeoutUnits": "seconds",
+        "rate": "1",
+        "nbRateUnits": "1",
+        "rateUnits": "second",
+        "randomFirst": "1",
+        "randomLast": "5",
+        "randomUnits": "seconds",
+        "drop": false,
+        "allowrate": false,
+        "outputs": 1,
+        "x": 320,
+        "y": 1160,
+        "wires": [
+            [
+                "85568a018d8ab769",
+                "d2f1a140acc6ad8b"
+            ]
+        ]
+    },
+    {
+        "id": "4a184e4d5a349178",
+        "type": "function",
+        "z": "069d71589049e2d5",
+        "g": "488c9b19399e3f29",
+        "name": "lowercase object keys",
+        "func": "function lowercaseKeysStrict(obj) {\n    if (obj == null || typeof obj !== \"object\" || Array.isArray(obj)) {\n        throw new Error(\"Expected a non-null object.\");\n    }\n    const out = {};\n    for (const [k, v] of Object.entries(obj)) {\n        const lower = k.toLowerCase();\n        if (lower in out && lower !== k) {\n            throw new Error(`Key collision when lowercasing: \"${k}\" maps to \"${lower}\" already in use.`);\n        }\n        out[lower] = v;\n    }\n    return out;\n}\n\nmsg.payload = msg.payload.map(lowercaseKeysStrict)\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 160,
+        "y": 840,
+        "wires": [
+            [
+                "0860de022163d1b5",
+                "a16d4523d24efb82"
+            ]
+        ]
+    },
+    {
+        "id": "0860de022163d1b5",
+        "type": "debug",
+        "z": "069d71589049e2d5",
+        "g": "488c9b19399e3f29",
+        "name": "debug 7",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 400,
+        "y": 840,
+        "wires": []
+    },
+    {
+        "id": "d2f1a140acc6ad8b",
+        "type": "debug",
+        "z": "069d71589049e2d5",
+        "g": "5db400a3a36e6624",
+        "name": "debug 8",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": true,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "parts.index",
+        "statusType": "msg",
+        "x": 550,
+        "y": 1160,
+        "wires": []
+    },
+    {
+        "id": "a16d4523d24efb82",
+        "type": "change",
+        "z": "069d71589049e2d5",
+        "g": "74fe9bced58cb394",
+        "name": "",
+        "rules": [
+            {
+                "t": "move",
+                "p": "payload",
+                "pt": "msg",
+                "to": "data",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 160,
+        "y": 960,
+        "wires": [
+            [
+                "c799878894170ef2"
+            ]
+        ]
+    },
+    {
+        "id": "97e6f73ee9dd90e6",
+        "type": "change",
+        "z": "069d71589049e2d5",
+        "g": "74fe9bced58cb394",
+        "name": "",
+        "rules": [
+            {
+                "t": "move",
+                "p": "data",
+                "pt": "msg",
+                "to": "payload",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 150,
+        "y": 1040,
+        "wires": [
+            [
+                "4537bdd3c8ec6d65"
+            ]
+        ]
+    },
+    {
+        "id": "c799878894170ef2",
+        "type": "function",
+        "z": "069d71589049e2d5",
+        "g": "74fe9bced58cb394",
+        "name": "Configure PostgREST request",
+        "func": "const postgrest = env.get('POSTGREST_API_URL');\n\nconst dataspace = env.get('FIWARE_SERVICE');\n\nmsg.method = 'DELETE';\nmsg.url = `${postgrest}/erweiterteoeffentlicheeinheitstromerzeugung`;\nmsg.headers = {\n    \"Content-Profile\": `postgrest_${dataspace}`,\n};\n\nreturn msg;\n\n\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 430,
+        "y": 960,
+        "wires": [
+            [
+                "78b4eadc086a8c59"
+            ]
+        ]
+    },
+    {
+        "id": "78b4eadc086a8c59",
+        "type": "http request",
+        "z": "069d71589049e2d5",
+        "g": "74fe9bced58cb394",
+        "name": "",
+        "method": "use",
+        "ret": "txt",
+        "paytoqs": "ignore",
+        "url": "",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 710,
+        "y": 960,
+        "wires": [
+            [
+                "4462228a65d5c11f",
+                "97e6f73ee9dd90e6"
+            ]
+        ]
+    },
+    {
+        "id": "4462228a65d5c11f",
+        "type": "debug",
+        "z": "069d71589049e2d5",
+        "g": "74fe9bced58cb394",
+        "name": "Response",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": true,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "'status: ' & msg.statusCode",
+        "statusType": "jsonata",
+        "x": 920,
+        "y": 960,
+        "wires": []
+    },
+    {
+        "id": "0f4f987967cd5ee1",
+        "type": "inject",
+        "z": "ebc0db16fd47daa1",
+        "name": "Name",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "FIWARE_SERVICE",
+        "payloadType": "str",
+        "x": 110,
+        "y": 60,
+        "wires": [
+            [
+                "0993ad2062d69031"
+            ]
+        ]
+    },
+    {
+        "id": "0993ad2062d69031",
+        "type": "function",
+        "z": "ebc0db16fd47daa1",
+        "name": "env.get",
+        "func": "msg.payload = env.get(msg.payload)\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 300,
+        "y": 60,
+        "wires": [
+            [
+                "7fff2e2870ed2234"
+            ]
+        ]
+    },
+    {
+        "id": "7fff2e2870ed2234",
+        "type": "debug",
+        "z": "ebc0db16fd47daa1",
+        "name": "FIWARE_SERVICE",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": true,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "payload",
+        "statusType": "auto",
+        "x": 510,
+        "y": 60,
+        "wires": []
+    },
+    {
+        "id": "a7a0b924e88371c1",
+        "type": "inject",
+        "z": "ebc0db16fd47daa1",
+        "name": "Name",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "POSTGREST_API_URL",
+        "payloadType": "str",
+        "x": 110,
+        "y": 140,
+        "wires": [
+            [
+                "ba6f6964b310b054"
+            ]
+        ]
+    },
+    {
+        "id": "ba6f6964b310b054",
+        "type": "function",
+        "z": "ebc0db16fd47daa1",
+        "name": "env.get",
+        "func": "msg.payload = env.get(msg.payload)\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 300,
+        "y": 140,
+        "wires": [
+            [
+                "5a1ed329cfd10f13"
+            ]
+        ]
+    },
+    {
+        "id": "5a1ed329cfd10f13",
+        "type": "debug",
+        "z": "ebc0db16fd47daa1",
+        "name": "POSTGREST_API_URL",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": true,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "payload",
+        "statusType": "auto",
+        "x": 530,
+        "y": 140,
+        "wires": []
+    }
+]
